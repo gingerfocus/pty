@@ -1,3 +1,12 @@
+### 0.3.0
+* Updated to Rust 2021
+* API Change: `Fork` must now be matched on to get the inner data.
+* `Master` is no longer `io::Read` or `io::Write`.
+  * Use the `pty` field on it to get at the inner data.
+* Reduced error that can happened after call to `fork`
+  * Less likely hood that one half succeed while the other doesn't
+* API Addition: added `pty::fork`
+
 ### 0.2.0
 * Improve the Error Handling.
 * Improve the POO representation.
