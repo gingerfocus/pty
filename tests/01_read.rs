@@ -6,7 +6,6 @@ use self::pty::prelude::*;
 
 use std::io::prelude::*;
 use std::process::{Command, Stdio};
-use std::string::String;
 
 #[test]
 fn command_read() {
@@ -15,10 +14,7 @@ fn command_read() {
         Fork::Parent(mut master) => {
             let mut string = String::new();
 
-            master
-                .pty
-                .read_to_string(&mut string)
-                .unwrap_or_else(|e| panic!("{}", e));
+            master.pty.read_to_string(&mut string).unwrap();
 
             let output = Command::new("tty")
                 .stdin(Stdio::inherit())

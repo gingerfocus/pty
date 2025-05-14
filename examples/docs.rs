@@ -1,4 +1,4 @@
-use pty::fork::*;
+use pty::prelude::*;
 use std::io::Read;
 use std::process::Command;
 

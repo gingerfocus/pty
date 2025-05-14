@@ -59,18 +59,24 @@
     trivial_numeric_casts,
     unused_qualifications
 )]
-#![feature(never_type)]
 
-mod fd;
-pub mod fork;
 pub mod prelude;
+mod fork;
+mod master;
+mod slave;
+mod pty;
+
+pub use crate::master::{Master, MasterError};
+pub use crate::slave::{Slave, SlaveError};
+// pub use crate::fork::{Fork, ForkError};
+
 
 const DEFAULT_PTMX: &str = "/dev/ptmx";
 
 /// Forks calling the clojure on the child retruning the parent.
-pub fn fork<F>(f: F) -> fork::Master
+pub fn fork<F>(f: F) -> Master
 where
-    F: FnOnce(fork::Slave) -> i32,
+    F: FnOnce(Slave) -> i32,
 {
     let fork = fork::Fork::from_ptmx().unwrap();
     match fork {
@@ -81,3 +87,40 @@ where
         }
     }
 }
+
+// pub fn a() {
+//     // let size = libc::winsize {
+//     //     ws_row: todo!(),
+//     //     ws_col: todo!(),
+//     //     ws_xpixel: todo!(),
+//     //     ws_ypixel: todo!(),
+//     // };
+//
+//     let mut master = 0;
+//     let mut slave = 0;
+//     let mut name = [0; 256];
+//     let e = unsafe {
+//         libc::openpty(
+//             &mut master,
+//             &mut slave,
+//             name.as_mut_ptr(),
+//             std::ptr::null(),
+//             std::ptr::null(), //&size,
+//         )
+//     };
+//     if e == -1 {
+//         panic!("openpty failed");
+//     }
+//     use std::fs;
+//
+//     {
+//         let mut s = unsafe { fs::File::from_raw_fd(slave) };
+//         s.write(b"hello").unwrap();
+//         // file is closed
+//     }
+//
+//     let mut m = unsafe { fs::File::from_raw_fd(master) };
+//     let mut buf = Vec::new();
+//     m.read_to_end(&mut buf).unwrap();
+//     dbg!(buf);
+// }

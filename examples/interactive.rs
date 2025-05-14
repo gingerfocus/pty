@@ -18,10 +18,7 @@ fn main() {
 fn master_main(mut master: Master) {
     let mut string = String::new();
 
-    master
-        .pty
-        .read_to_string(&mut string)
-        .unwrap_or_else(|e| panic!("{}", e));
+    master.pty.read_to_string(&mut string).unwrap();
 
     let output = Command::new("tty")
         .stdin(Stdio::inherit())
